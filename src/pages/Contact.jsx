@@ -1,12 +1,21 @@
 // TODO 7: props를 받아서 주문 요약을 렌더링하세요
 //         - cart: 장바구니에 담긴 과일 배열
-const Contact = () => {
+const Contact = ({ cart }) => {
+  const totalCount = cart.length;
+  const totalPrice = cart.reduce((acc, item) => (acc += item.price), 0);
+
   return (
     <div style={{ padding: "20px" }}>
       <h2>주문 요약</h2>
       {/* TODO: 장바구니에 담긴 과일의 총 개수와 총 가격을 보여주세요 */}
       {/* 장바구니가 비어있으면 "장바구니에 담긴 상품이 없습니다" 메시지를 보여주세요 */}
       <p>여기에 주문 요약을 렌더링하세요</p>
+
+      <p>
+        {cart.length
+          ? `장바구니에 담긴 과일의 총 개수: ${totalCount}개, 총 가격: ${totalPrice.toLocaleString()}원`
+          : `장바구니에 담긴 상품이 없습니다.`}
+      </p>
     </div>
   );
 };
