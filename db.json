@@ -1,0 +1,17 @@
+{
+  "cart": [
+    {
+      "id": "W0zk1yzvpvk",
+      "name": "바나나",
+      "price": 1500,
+      "emoji": "🍌"
+    },
+    {
+      "id": "DSAzH0Ui8Lc",
+      "name": "딸기",
+      "price": 2500,
+      "emoji": "🍓"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

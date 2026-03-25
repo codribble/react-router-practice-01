@@ -1,5 +1,8 @@
 // TODO 5: props를 받아서 과일 목록을 렌더링하세요
 //         - fruits: 전체 과일 배열
+
+import FruitItem from "../components/FruitItem";
+
 //         - onAddToCart: 장바구니 추가 함수
 const Home = ({ fruits, onAddToCart }) => {
   return (
@@ -12,23 +15,12 @@ const Home = ({ fruits, onAddToCart }) => {
       <div>
         {fruits.map((fruit) => {
           return (
-            <div key={fruit.id}>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <p>
-                  {fruit.emoji} {fruit.name}
-                </p>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <p>{fruit.price.toLocaleString()}원</p>
-                  <button
-                    onClick={() => {
-                      onAddToCart(fruit);
-                    }}
-                  >
-                    담기
-                  </button>
-                </div>
-              </div>
-            </div>
+            <FruitItem
+              key={fruit.id}
+              item={fruit}
+              isCart={false}
+              handler={() => onAddToCart(fruit)}
+            />
           );
         })}
       </div>

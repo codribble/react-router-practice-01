@@ -3,8 +3,9 @@ import "./App.css";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+const CART_API = "http://localhost:4000/cart";
 const FRUITS = [
   { id: 1, name: "사과", price: 1000, emoji: "🍎" },
   { id: 2, name: "바나나", price: 1500, emoji: "🍌" },
@@ -17,25 +18,58 @@ const App = () => {
   // TODO 1: useState를 import하고, 장바구니(cart) state를 빈 배열로 선언하세요
   const [cart, setCart] = useState([]);
 
+  useEffect(() => {
+    const fetchCart = async () => {
+      const res = await fetch(`${CART_API}`);
+      if (!res.ok) {
+        console.error(`에러발생: ${res.status} ${res.statusText}`);
+        throw new Error(`${res.status}`);
+      }
+      const data = await res.json();
+
+      setCart(data);
+    };
+
+    fetchCart();
+  }, []);
+
   // TODO 2: 장바구니에 과일을 추가하는 함수 addToCart를 만드세요
   //         - fruit 객체를 파라미터로 받습니다
   //         - 이미 장바구니에 있는 과일은 추가하지 않습니다 (id로 비교)
-  const addToCart = (fruit) => {
-    const existCartFruit = cart.find((f) => f.id === fruit.id);
+  const addToCart = async (fruit) => {
+    const existCartFruit = cart.some((f) => f.name === fruit.name);
 
     if (existCartFruit) {
       alert("이미 담긴 상품입니다.");
       return;
-    } else {
-      setCart([...cart, fruit]);
     }
+
+    const res = await fetch(`${CART_API}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(fruit),
+    });
+    if (!res.ok) {
+      console.error(`에러발생: ${res.status} ${res.statusText}`);
+      throw new Error(`${res.status}`);
+    }
+    const newItem = await res.json();
+
+    setCart((prev) => [...prev, newItem]);
   };
 
   // TODO 3: 장바구니에서 과일을 제거하는 함수 removeFromCart를 만드세요
   //         - fruitId를 파라미터로 받습니다
   //         - filter를 사용하여 해당 과일을 제거합니다
-  const removeFromCart = (fruitId) => {
-    setCart(cart.filter((item) => item.id !== fruitId));
+  const removeFromCart = async (fruitId) => {
+    await fetch(`${CART_API}/${fruitId}`, {
+      method: "DELETE",
+    });
+
+    // setCart(cart.filter((item) => item.id !== fruitId));
+    setCart((prev) => prev.filter((item) => item.id !== fruitId));
   };
 
   return (

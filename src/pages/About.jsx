@@ -1,5 +1,8 @@
 // TODO 6: props를 받아서 장바구니 목록을 렌더링하세요
 //         - cart: 장바구니에 담긴 과일 배열
+
+import FruitItem from "../components/FruitItem";
+
 //         - onRemoveFromCart: 장바구니 제거 함수
 const About = ({ cart, onRemoveFromCart }) => {
   return (
@@ -14,27 +17,12 @@ const About = ({ cart, onRemoveFromCart }) => {
         {cart.length
           ? cart.map((item) => {
               return (
-                <div key={item.id}>
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <p>
-                      {item.emoji} {item.name}
-                    </p>
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 10 }}
-                    >
-                      <p>{item.price.toLocaleString()}원</p>
-                      <button
-                        onClick={() => {
-                          onRemoveFromCart(item.id);
-                        }}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <FruitItem
+                  key={item.id}
+                  item={item}
+                  isCart={true}
+                  handler={() => onRemoveFromCart(item.id)}
+                />
               );
             })
           : "장바구니가 비어있습니다"}
